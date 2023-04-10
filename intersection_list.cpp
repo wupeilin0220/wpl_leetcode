@@ -33,4 +33,38 @@ public:
         }
         return nullptr;
     }
+
+    // 方法二：使用两个指针
+    // 分别遍历A和B连表，如果相同则返回节点；如果不同把pa赋值headB， pb赋值headA，
+    // 后再次遍历是否pa==pb，如果相等返回pa，第二次遍历链表后还没有相等的节点，则没有相交的节点返回nullptr;
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        if (headA == nullptr || headB == nullptr){
+            return nullptr;
+        }
+
+        int pa_size = 0, pb_size = 0;
+        ListNode* pa = headA;
+        ListNode* pb = headB;
+        while(pa != pb){
+            if (pa_size == 2 and pb_size == 2){
+                pa = nullptr;
+                break;
+            }
+
+            if (pa->next == nullptr){
+                pa = headB;
+                ++pa_size;
+            }else{
+                pa = pa->next;
+            }
+
+            if (pb->next == nullptr){
+                pb = headA;
+                ++pb_size;
+            }else{
+                pb = pb->next;
+            }
+        }
+        return pa;
+    }
 };

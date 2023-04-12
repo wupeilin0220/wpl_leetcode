@@ -30,4 +30,18 @@ public:
         }
         return true;
     }
+
+    // 方法二：使用哈希表，遍历链表然后保存到哈希表中，如果已经存在表示有环；
+    bool hasCycle(ListNode *head) {
+        std::unordered_set<ListNode*> seen;
+        while(head != nullptr){
+            if(seen.count(head)){
+                return true;
+            }
+            seen.insert(head);
+            head = head->next;
+        }
+
+        return false;
+    }
 };

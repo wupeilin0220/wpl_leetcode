@@ -57,4 +57,59 @@ public:
         }
         return head;
     }
+
+    // 把两组链表存在vector中，分别对节点相加，主要注意如何进1，以及最后满10进1的操作；
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        int is_ten = 0;
+        vector<int> l1_val;
+        vector<int> l2_val;
+        vector<int> sum_val;
+        int tmp_l1=0, tmp_l2 = 0, tmp_sum=0;
+        ListNode* head = nullptr;
+        ListNode* curr = nullptr;
+        // 遍历两组链表存入vector；
+        while(l1 != nullptr){
+            l1_val.push_back(l1->val);
+            l1 = l1->next;
+        }
+        while(l2 != nullptr){
+            l2_val.push_back(l2->val);
+            l2 = l2->next;
+        }
+
+        // 遍历两个vector值相加；
+        int i=0, j=0;
+        while(i<l1_val.size() || j<l2_val.size()){
+            tmp_l1 = (i>=l1_val.size()) ? 0 : l1_val[i];
+            tmp_l2 = (j>=l2_val.size()) ? 0 : l2_val[j];
+            tmp_sum = tmp_l1 + tmp_l2;
+            tmp_sum = tmp_sum + is_ten;
+            if((tmp_sum / 10) > 0){
+                tmp_sum = (tmp_sum % 10);
+                is_ten = 1;
+            }else{
+                is_ten = 0;
+            }
+            sum_val.push_back(tmp_sum);
+            i++;
+            j++;
+        }
+        // 最后满10，补1；
+        if(is_ten == 1){
+            sum_val.push_back(is_ten);
+        }
+
+        // 遍历结果vector，生成链表返回头结点；
+        for(int i = 0; i < sum_val.size(); i++){
+            ListNode* next = new ListNode(sum_val[i]);
+            if(head == nullptr){
+                head = next;
+                curr = next;
+                continue;
+            }
+            curr->next = next;
+            curr = curr->next;
+        }
+        return head;
+    }
 };
